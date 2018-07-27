@@ -21,6 +21,7 @@ DOCKER_SCRIPT="docker.sh"
 SYSTEMCTL_SCRIPT="systemctl.sh"
 
 echo "Pulling the mosquitto docker image"
+
 sh $DOCKER_SCRIPT pull compulsivecoder/mosquitto-arm && \
 
 echo "Creating mosquitto directory"
