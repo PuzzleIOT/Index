@@ -1,0 +1,3 @@
+[submodule "sketches/switch/NetSwitch"]
+	path = sketches/switch/NetSwitch
+	url = https://github.com/PuzzleIOT/NetSwitch.git
