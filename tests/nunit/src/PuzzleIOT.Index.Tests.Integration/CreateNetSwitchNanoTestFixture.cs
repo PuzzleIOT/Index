@@ -17,21 +17,22 @@ namespace NetSwitch.Index.Tests.Integration
 			var deviceType = "switch/NetSwitch";
 			var deviceLabel = "MySwitch";
 			var deviceName = "mySwitch";
+			var devicePin = 13;
 			var devicePort = "ttyUSB1";
 
-			var arguments = deviceLabel + " " + deviceName + " " + devicePort;
+			var arguments = deviceLabel + " " + deviceName + " " + devicePin + " " + devicePort;
 
 			var starter = GetDockerProcessStarter();
-			starter.PreCommand = "sh init-mock-setup.sh";
+			starter.PreCommand = "sh init-mock-setup.sh && sh clean.sh";
 			starter.RunDockerBash("sh " + scriptName + " " + arguments);
 
 			CheckDeviceInfoWasCreated(deviceType, deviceLabel, deviceName, devicePort);
 
-			CheckDeviceUIWasCreated(deviceLabel, deviceName);
+			CheckDevicePinUIWasCreated(deviceLabel, deviceName, devicePin);
 
 			CheckMqttBridgeServiceFileWasCreated(deviceName);
 
-			CheckUpdaterServiceFileWasCreated(deviceName);
+			//CheckUpdaterServiceFileWasCreated(deviceName);
 		}
 	}
 }

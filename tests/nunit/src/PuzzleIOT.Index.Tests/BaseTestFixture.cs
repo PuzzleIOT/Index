@@ -117,6 +117,39 @@ namespace NetSwitch.Index.Tests
 			Assert.AreEqual(devicePort, foundPort, "Device port doesn't match.");
 		}
 
+		public void CheckDevicePinInfoWasCreated(string deviceType, string deviceLabel, string deviceName, int devicePin, string devicePort)
+		{
+			var devicesDir = Path.GetFullPath("devices");
+			var deviceDir = Path.Combine(devicesDir, deviceName);
+
+			Console.WriteLine("Device dir:");
+			Console.WriteLine(deviceDir);
+
+			var deviceDirExists = Directory.Exists(deviceDir);
+
+			Assert.IsTrue(deviceDirExists, "Device directory not found: " + deviceDir);
+
+			var foundType = File.ReadAllText(Path.Combine(deviceDir, "type.txt")).Trim();
+
+			Assert.AreEqual(deviceType, foundType, "Device type doesn't match.");
+
+			var foundLabel = File.ReadAllText(Path.Combine(deviceDir, "label.txt")).Trim();
+
+			Assert.AreEqual(deviceLabel, foundLabel, "Device label doesn't match.");
+
+			var foundName = File.ReadAllText(Path.Combine(deviceDir, "name.txt")).Trim();
+
+			Assert.AreEqual(deviceName, foundName, "Device name doesn't match.");
+
+			var foundPin = File.ReadAllText(Path.Combine(deviceDir, "pin.txt")).Trim();
+
+			Assert.AreEqual(devicePin, foundPin, "Device pin doesn't match.");
+
+			var foundPort = File.ReadAllText(Path.Combine(deviceDir, "port.txt")).Trim();
+
+			Assert.AreEqual(devicePort, foundPort, "Device port doesn't match.");
+		}
+
 		public void CheckDeviceUIWasCreated(string deviceLabel, string deviceName)
 		{
 			Console.WriteLine("Checking that the device UI was created...");
@@ -125,12 +158,21 @@ namespace NetSwitch.Index.Tests
 
 			Console.WriteLine(jsonString);
 
-			CheckDeviceSummaryWasCreated(json, deviceLabel, deviceName);
-			CheckDeviceTabIndexWasCreated(json, deviceLabel, deviceName);
-			CheckDeviceTabWasCreated(json, deviceLabel, deviceName);
+			CheckDeviceElementWasCreated(json, deviceLabel, deviceName, "C");
 		}
 
-		public void CheckDeviceSummaryWasCreated(JObject json, string deviceLabel, string deviceName)
+		public void CheckDevicePinUIWasCreated(string deviceLabel, string deviceName, int devicePin)
+		{
+			Console.WriteLine("Checking that the device UI was created...");
+			var jsonString = File.ReadAllText(LinearMqttSettingsFile);
+			var json = JObject.Parse(jsonString);
+
+			Console.WriteLine(jsonString);
+
+			CheckDeviceElementWasCreated(json, deviceLabel, deviceName, "D" + devicePin);
+		}
+
+		public void CheckDeviceElementWasCreated(JObject json, string deviceLabel, string deviceName, string topicKey)
 		{
 			Console.WriteLine("Checking the device summary was created...");
 			var dashboardsElement = json["dashboards"];
@@ -155,74 +197,9 @@ namespace NetSwitch.Index.Tests
 
 			Console.WriteLine("Checking summary device meter topic matches device name...");
 
-			var expectedTopic = "/" + deviceName + "/C";
+			var expectedTopic = "/" + deviceName + "/" + topicKey;
 
 			Assert.AreEqual(expectedTopic, summaryDeviceMeterElement["topic"].ToString(), "Summary element topic doesn't match the device name.");
-		}
-
-		public void CheckDeviceTabIndexWasCreated(JObject json, string deviceLabel, string deviceName)
-		{
-			Console.WriteLine("Checking the device tab index was created...");
-			var tabsElement = json["tabs"];
-
-			var deviceTabElement = tabsElement[1];
-
-			Console.WriteLine("Device tab element:");
-			Console.WriteLine(deviceTabElement);
-
-			Console.WriteLine("Details from json:");
-			Console.WriteLine("  name: " + deviceTabElement["name"]);
-
-			Console.WriteLine("Checking device tab name matches device label...");
-
-			Assert.AreEqual(deviceLabel, deviceTabElement["name"].ToString(), "Summary element name doesn't match the device label.");
-		}
-
-		public void CheckDeviceTabWasCreated(JObject json, string deviceLabel, string deviceName)
-		{
-			Console.WriteLine("Checking the device tab content was created...");
-			var dashboardsElement = json["dashboards"];
-
-			var deviceElement = dashboardsElement[1];
-			var deviceElementId = dashboardsElement[1]["id"];
-
-			Console.WriteLine("Device element:");
-			Console.WriteLine(deviceElement);
-			Console.WriteLine("Device element ID: " + deviceElementId);
-
-			Console.WriteLine("Checking device element ID is correct...");
-
-			var expectedDeviceElementId = "2";
-
-			Assert.AreEqual(expectedDeviceElementId, deviceElementId.ToString(), "Value meter topic doesn't match the device name.");
-
-			// The value meter element has index 0 for the switch and index 1 for the switch
-			var valueMeterIndex = (deviceName.ToLower().Contains("switch") ? 0 : 1);
-
-			var valueMeterElement = deviceElement["dashboard"][valueMeterIndex];
-
-			Console.WriteLine("Value meter element:");
-			Console.WriteLine(valueMeterElement);
-
-			Console.WriteLine("Details from json:");
-			Console.WriteLine("  name: " + valueMeterElement["name"]);
-			Console.WriteLine("  topic: " + valueMeterElement["topic"]);
-
-			Console.WriteLine("Checking value meter name is valid...");
-
-
-
-			throw new NotImplementedException();
-
-			/*var expectedValueMeterName = "Soil Switch";
-
-			Assert.AreEqual(expectedValueMeterName, valueMeterElement["name"].ToString(), "Value meter name is invalid.");
-
-			Console.WriteLine("Checking value meter topic matches device name...");
-
-			var expectedValueMeterTopic = "/" + deviceName + "/C";
-
-			Assert.AreEqual(expectedValueMeterTopic, valueMeterElement["topic"].ToString(), "Value meter topic doesn't match the device name.");*/
 		}
 
 		public void CheckDeviceUICount(int numberOfDevicesExpected)

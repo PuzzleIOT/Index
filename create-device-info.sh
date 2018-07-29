@@ -2,7 +2,8 @@
 DEVICE_TYPE=$1
 DEVICE_LABEL=$2
 DEVICE_NAME=$3
-DEVICE_PORT=$4
+DEVICE_PIN=$4
+DEVICE_PORT=$5
 
 
 EXAMPLE_TEXT="Example: sh create-device-info.sh monitor/SoilMoistureSensorCalibratedSerial Monitor1 monitor1 ttyUSB0"

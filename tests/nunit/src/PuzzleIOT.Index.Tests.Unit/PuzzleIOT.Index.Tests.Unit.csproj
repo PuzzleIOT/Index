@@ -39,6 +39,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CreateDeviceInfoTestFixture.cs" />
     <Compile Include="CreateNetSwitchUITestFixture.cs" />
+    <Compile Include="CreateDevicePinInfoTestFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PuzzleIOT.Index.Tests\PuzzleIOT.Index.Tests.csproj">

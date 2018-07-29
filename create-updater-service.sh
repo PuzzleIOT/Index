@@ -31,7 +31,7 @@ echo "Device name: $DEVICE_NAME"
 echo "Device port: $DEVICE_PORT"
 
 SERVICE_EXAMPLE_FILE="puzzleiot-updater-${DEVICE_TYPE}-${DEVICE_BOARD}.service.example"
-SERVICE_FILE="puzzleiot-updater-$DEVICE_NAME.service"
+SERVICE_FILE="puzzleiot-updater-$DEVICE_PORT.service"
 SERVICE_PATH="scripts/apps/GitDeployer/svc"
 SERVICE_FILE_PATH="$SERVICE_PATH/$SERVICE_FILE"
 SERVICE_EXAMPLE_FILE_PATH="$SERVICE_PATH/$SERVICE_EXAMPLE_FILE"

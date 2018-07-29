@@ -4,46 +4,47 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 namespace NetSwitch.Index.Tests.Unit
 {
-	[TestFixture(Category = "Unit")]
-	public class CreateNetSwitchUITestFixture : BaseTestFixture
-	{
-		[Test]
-		public void Test_CreateNetSwitchUI()
-		{
-			var scriptName = "create-netswitch-ui.sh";
+  [TestFixture(Category = "Unit")]
+  public class CreateNetSwitchUITestFixture : BaseTestFixture
+  {
+    [Test]
+    public void Test_CreateNetSwitchUI()
+    {
+      var scriptName = "create-switch-ui.sh";
 
-			Console.WriteLine("Testing " + scriptName + " script");
+      Console.WriteLine("Testing " + scriptName + " script");
 
-			var deviceLabel = "Switch1";
-			var deviceName = "switch1";
+      var deviceLabel = "Switch1";
+      var deviceName = "switch1";
+      var devicePin = 13;
 
-			var arguments = deviceLabel + " " + deviceName;
+      var arguments = deviceLabel + " " + deviceName + " " + devicePin;
 
-			var command = "sh " + scriptName + " " + arguments;
+      var command = "sh " + scriptName + " " + arguments;
 
-			var starter = new ProcessStarter();
+      var starter = new ProcessStarter();
 
-			Console.WriteLine("Running script...");
+      Console.WriteLine("Running script...");
 
-			starter.Start(command);
+      starter.Start(command);
 
-			var output = starter.Output;
+      var output = starter.Output;
 
-			Console.WriteLine("Checking device UI was created...");
+      Console.WriteLine("Checking device UI was created...");
 
-			CheckDeviceUIWasCreated(deviceLabel, deviceName);
+      CheckDevicePinUIWasCreated(deviceLabel, deviceName, devicePin);
 
-			Console.WriteLine("Creating device info folder...");
+      Console.WriteLine("Creating device info folder...");
 
-			Directory.CreateDirectory(Path.GetFullPath("devices/" + deviceName));
+      Directory.CreateDirectory(Path.GetFullPath("devices/" + deviceName));
 
-			Console.WriteLine("Attempting to create a duplicate...");
+      Console.WriteLine("Attempting to create a duplicate...");
 
-			starter.Start(command);
+      starter.Start(command);
 
-			Console.WriteLine("Ensuring that no duplicate UI was created...");
+      Console.WriteLine("Ensuring that no duplicate UI was created...");
 
-			CheckDeviceUICount(1);
-		}
-	}
+      CheckDeviceUICount(1);
+    }
+  }
 }
