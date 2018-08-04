@@ -12,36 +12,9 @@ DIR=$PWD
 
 git submodule update --init
 
-echo "Updating SoilMoistureSensorCalibratedSerial"
+echo "Updating NetSwitch"
 
-cd sketches/monitor/SoilMoistureSensorCalibratedSerial && \
-sh clean.sh && \
-git checkout $BRANCH && \
-git pull origin $BRANCH || exit 1
-
-cd $DIR
-
-echo "Updating SoilMoistureSensorCalibratedSerialESP"
-
-cd sketches/monitor/SoilMoistureSensorCalibratedSerialESP && \
-sh clean.sh && \
-git checkout $BRANCH && \
-git pull origin $BRANCH || exit 1
-
-cd $DIR
-
-echo "Updating SoilMoistureSensorCalibratedPump"
-
-cd sketches/irrigator/SoilMoistureSensorCalibratedPump && \
-sh clean.sh && \
-git checkout $BRANCH && \
-git pull origin $BRANCH || exit 1
-
-cd $DIR
-
-echo "Updating SoilMoistureSensorCalibratedPumpESP"
-
-cd sketches/irrigator/SoilMoistureSensorCalibratedPumpESP && \
+cd sketches/switch/NetSwitch && \
 sh clean.sh && \
 git checkout $BRANCH && \
 git pull origin $BRANCH || exit 1
