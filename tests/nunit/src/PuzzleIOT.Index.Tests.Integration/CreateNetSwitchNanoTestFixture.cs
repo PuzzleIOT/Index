@@ -23,7 +23,7 @@ namespace NetSwitch.Index.Tests.Integration
 			var arguments = deviceLabel + " " + deviceName + " " + devicePin + " " + devicePort;
 
 			var starter = GetDockerProcessStarter();
-			starter.PreCommand = "sh init-mock-setup.sh && sh clean.sh";
+			starter.PreCommand = "sh init-mock-setup.sh && sh clean.sh\t\t";
 			starter.RunDockerBash("sh " + scriptName + " " + arguments);
 
 			CheckDeviceInfoWasCreated(deviceType, deviceLabel, deviceName, devicePort);
