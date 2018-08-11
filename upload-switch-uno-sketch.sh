@@ -24,12 +24,26 @@ SKETCH_PATH="src/NetSwitch/NetSwitch.ino"
 sh inject-version.sh && \
 
 # Build the sketch
-sh build-uno.sh && \
+if [ $IS_MOCK_SUBMODULE_BUILDS = 0 ]; then
+    sh build-uno.sh || exit 1
+else
+    echo "[mock] sh build-uno.sh"
+fi
 
 # Upload the sketch
-sh upload-uno.sh "/dev/$SERIAL_PORT"
+if [ $IS_MOCK_HARDWARE = 0 ]; then
+    sh upload-uno.sh "/dev/$SERIAL_PORT" || exit 1
+else
+    echo "[mock] sh upload-uno.sh /dev/$SERIAL_PORT"
+fi
 
 cd $DIR
 
-sh $BASE_PATH/monitor-serial.sh "/dev/$SERIAL_PORT"
+if [ $IS_MOCK_HARDWARE = 0 ]; then
+    sh $BASE_PATH/monitor-serial.sh "/dev/$SERIAL_PORT" || exit 1
+else
+    echo "[mock] sh monitor-serial.sh /dev/$SERIAL_PORT"
+fi
+
+echo "Finished upload"
 

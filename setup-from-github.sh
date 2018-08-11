@@ -1,5 +1,5 @@
 echo ""
-echo "Setting up GreenSense index from GitHub"
+echo "Setting up PuzzleIOT index from GitHub"
 echo ""
 
 BRANCH=$1
@@ -18,14 +18,14 @@ if ! type "git" > /dev/null; then
   sudo apt-get update && sudo apt-get install -y git
 fi
 
-git clone --recursive https://github.com/GreenSense/Index.git GreenSense/Index -b $BRANCH && \
+git clone --recursive https://github.com/PuzzleIOT/Index.git PuzzleIOT/Index -b $BRANCH && \
 
 echo "Current directory:"
 echo "  $PWD"
 
-INDEX_DIR="GreenSense/Index" && \
+INDEX_DIR="PuzzleIOT/Index" && \
 
-echo "GreenSense index directory:" && \
+echo "PuzzleIOT index directory:" && \
 echo "  $INDEX_DIR" && \
 
 cd $INDEX_DIR && \
@@ -34,7 +34,7 @@ sh prepare.sh && \
 sh init.sh && \
 
 echo "" && \
-echo "The GreenSense index is initialized and ready to use."
+echo "The PuzzleIOT index is initialized and ready to use."
 
 
 

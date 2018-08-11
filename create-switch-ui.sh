@@ -11,12 +11,18 @@ DEVICE_EXISTS=false
 
 DEVICE_LABEL=$1
 DEVICE_NAME=$2
+DEVICE_PIN=$3
 
 if [ ! $DEVICE_LABEL ]; then
   DEVICE_LABEL="Switch1"
 fi
+
 if [ ! $DEVICE_NAME ]; then
   DEVICE_NAME="switch1"
+fi
+
+if [ ! $DEVICE_PIN ]; then
+  DEVICE_PIN="13"
 fi
 
 DEVICE_INFO_DIR="devices/$DEVICE_NAME"
@@ -32,53 +38,24 @@ if [ $DEVICE_EXISTS = false ]; then
 
   echo "Device label: $DEVICE_LABEL"
   echo "Device name: $DEVICE_NAME"
+  echo "Device pin: $DEVICE_PIN"
 
   DEVICE_COUNT=$(cat devicecount.txt) && \
   DEVICE_ID=$(($DEVICE_COUNT+1)) && \
 
   echo "Device number: $DEVICE_COUNT" && \
 
-  # Switch tab
-
-  IRRIGATOR_TAB=$(cat parts/switchtab.json)
-
-  IRRIGATOR_TAB=$(echo $IRRIGATOR_TAB | sed "s/Switch1/$DEVICE_LABEL/g") && \
-  IRRIGATOR_TAB=$(echo $IRRIGATOR_TAB | sed "s/switch1/$DEVICE_NAME/g") && \
-
-  IRRIGATOR_TAB=$(echo $IRRIGATOR_TAB | jq .id=$DEVICE_ID) && \
-
-  NEW_SETTINGS=$(jq ".tabs[$DEVICE_COUNT] |= . + $IRRIGATOR_TAB" newsettings.json) && \
-
-  echo $NEW_SETTINGS > newsettings.json && \
-
   # Switch summary
 
-  IRRIGATOR_SUMMARY=$(cat parts/switchsummary.json) && \
+  SWITCH_ELEMENT=$(cat parts/switchelement.json) && \
 
-  IRRIGATOR_SUMMARY=$(echo $IRRIGATOR_SUMMARY | sed "s/Switch1/$DEVICE_LABEL/g") && \
-  IRRIGATOR_SUMMARY=$(echo $IRRIGATOR_SUMMARY | sed "s/switch1/$DEVICE_NAME/g") && \
+  SWITCH_ELEMENT=$(echo $SWITCH_ELEMENT | sed "s/Switch1/$DEVICE_LABEL/g") && \
+  SWITCH_ELEMENT=$(echo $SWITCH_ELEMENT | sed "s/switch1/$DEVICE_NAME/g") && \
+  SWITCH_ELEMENT=$(echo $SWITCH_ELEMENT | sed "s/D13/D$DEVICE_PIN/g") && \
 
-  #IRRIGATOR_SUMMARY=$(echo $IRRIGATOR_SUMMARY | jq .id=$DEVICE_ID) && \
+  #SWITCH_ELEMENT=$(echo $SWITCH_ELEMENT | jq .id=$DEVICE_ID) && \
 
-  NEW_SETTINGS=$(jq ".dashboards[0].dashboard[$(($DEVICE_COUNT-1))] |= . + $IRRIGATOR_SUMMARY" newsettings.json) && \
-
-  echo $NEW_SETTINGS > newsettings.json && \
-
-
-  # Switch dashboard
-
-  IRRIGATOR_DASHBOARD=$(cat parts/switchdashboard.json) && \
-
-  IRRIGATOR_DASHBOARD=$(echo $IRRIGATOR_DASHBOARD | sed "s/Switch1/$DEVICE_LABEL/g") && \
-  IRRIGATOR_DASHBOARD=$(echo $IRRIGATOR_DASHBOARD | sed "s/switch1/$DEVICE_NAME/g") && \
-
-  #IRRIGATOR_DASHBOARD=$(echo $IRRIGATOR_DASHBOARD | jq .id=$DEVICE_ID) && \
-
-  NEW_SETTINGS=$(jq ".dashboards[$DEVICE_COUNT] |= . + $IRRIGATOR_DASHBOARD" newsettings.json) && \
-
-  echo $NEW_SETTINGS > newsettings.json && \
-
-  NEW_SETTINGS=$(jq ".dashboards[$DEVICE_COUNT].id=\"$DEVICE_ID\"" newsettings.json) && \
+  NEW_SETTINGS=$(jq ".dashboards[0].dashboard[$(($DEVICE_COUNT-1))] |= . + $SWITCH_ELEMENT" newsettings.json) && \
 
   echo $NEW_SETTINGS > newsettings.json && \
 

@@ -1,4 +1,4 @@
-echo "Initializing nunit tests for SoilMoistureSensorCalibratedPump project"
+echo "Initializing nunit tests for PuzzleIOT project"
 
 DIR=$PWD
 
