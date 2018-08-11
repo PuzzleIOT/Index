@@ -1,0 +1,10 @@
+ [Unit]
+ Description=GreenSense Monitor Update Service
+ After=multi-user.target
+
+ [Service]
+ Type=idle
+ ExecStart=/bin/sh -c "cd /home/j/workspace/PuzzleIOT/Index/scripts/apps/GitDeployer/ && sh start-git-deployer.sh 120 https://github.com/PuzzleIOT/NetSwitch.git tmp/NetSwitch pull-build-and-upload-nano.sh ttyUSB0 > svc/switch1log.txt"
+
+ [Install]
+ WantedBy=multi-user.target
