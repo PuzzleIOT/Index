@@ -1,0 +1,10 @@
+ [Unit]
+ Description=Puzzle IOT Switch MQTT Bridge Service
+ After=multi-user.target
+
+ [Service]
+ Type=idle
+ ExecStart=/bin/sh -c "wget -O - https://raw.githubusercontent.com/PuzzleIOT/Index/master/scripts/apps/BridgeArduinoSerialToMqttSplitCsv/start-mqtt-bridge-from-github.sh | sh -s -- \"--DeviceName=switch1 --SerialPort=/dev/ttyUSB0 --SubscribeTopics="D13,T13" --IncomingKeyValueSeparator=\":\" --SummaryKey=D\""
+
+ [Install]
+ WantedBy=multi-user.target
