@@ -3,8 +3,8 @@ echo "Creating garden switch configuration"
 echo ""
 
 # Example:
-# sh create-switch.sh [Label] [DeviceName] [Port]
-# sh create-switch.sh "Switch1" switch1 ttyUSB0 
+# sh create-switch.sh [Label] [DeviceName] [Pin] [Port]
+# sh create-switch.sh "Switch1" switch1 13 ttyUSB0 
 
 DIR=$PWD
 
@@ -35,10 +35,10 @@ echo "Device pin: $DEVICE_PIN"
 echo "Device port: $DEVICE_PORT"
 
 # Set up mobile UI
-sh create-switch-ui.sh $DEVICE_LABEL $DEVICE_NAME $DEVICE_PIN $DEVICE_PORT && \
+sh create-switch-ui.sh "$DEVICE_LABEL" $DEVICE_NAME $DEVICE_PIN $DEVICE_PORT && \
 
 # Create device info
-sh create-device-pin-info.sh switch/NetSwitch $DEVICE_LABEL $DEVICE_NAME $DEVICE_PIN $DEVICE_PORT && \
+sh create-device-pin-info.sh switch/NetSwitch "$DEVICE_LABEL" $DEVICE_NAME $DEVICE_PIN $DEVICE_PORT && \
 
 # Set up MQTT bridge service
 sh create-switch-mqtt-bridge-service.sh $DEVICE_NAME $DEVICE_PIN $DEVICE_PORT && \
