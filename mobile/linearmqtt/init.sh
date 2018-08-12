@@ -7,26 +7,7 @@ unzip config.linear && \
 
 # Extract the template parts
 
-SUMMARY_DASHBOARD=$(jq '.dashboards[0]' settings.json) && \
-echo $SUMMARY_DASHBOARD > parts/summarydashboard.json && \
-
-MONITOR_SUMMARY=$(jq '.dashboards[0].dashboard[0]' settings.json) && \
-echo $MONITOR_SUMMARY > parts/monitorsummary.json && \
-
-MONITOR_TAB=$(jq '.tabs[1]' settings.json) && \
-echo $MONITOR_TAB > parts/monitortab.json && \
-
-MONITOR_DASHBOARD=$(jq '.dashboards[1]' settings.json) && \
-echo $MONITOR_DASHBOARD > parts/monitordashboard.json && \
-
-IRRIGATOR_SUMMARY=$(jq '.dashboards[0].dashboard[1]' settings.json) && \
-echo $IRRIGATOR_SUMMARY > parts/irrigatorsummary.json && \
-
-IRRIGATOR_TAB=$(jq '.tabs[2]' settings.json) && \
-echo $IRRIGATOR_TAB > parts/irrigatortab.json && \
-
-IRRIGATOR_DASHBOARD=$(jq '.dashboards[2]' settings.json) && \
-echo $IRRIGATOR_DASHBOARD > parts/irrigatordashboard.json && \
+sh extract-parts.sh
 
 # Create the blank template file
 
